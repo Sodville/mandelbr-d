@@ -18,8 +18,8 @@ public class Main extends Application {
 	private int canvasWidth;
 	
 	public Main() {
-		canvasHeight = 400;
-		canvasWidth = 600;
+		canvasHeight = 600;
+		canvasWidth = 800;
 	}
 	
 	@Override
@@ -33,7 +33,7 @@ public class Main extends Application {
 			root.getChildren().add(canvas);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
-			primaryStage.setTitle("mandelbrød bby");
+			primaryStage.setTitle("mandelbrï¿½d bby");
 			primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -55,15 +55,26 @@ public class Main extends Application {
 	}
 	
 	private Color mandelCalc(int x, int y) {
-		int iterasjoner = 0;
+		int n = 0;
+		int iter = 255;
+		double zoom = 0.5;
 		ComplexNumber z = new ComplexNumber(0, 0);
 		// TODO: skaler til x i (-3, 1) og y i (-1.5, 1) elns
-		ComplexNumber c = new ComplexNumber(x/200d - 2d, y/-200d + 1d);
-		while (c.abs() <= 2 && iterasjoner < 2) {
+		ComplexNumber c = new ComplexNumber((x/200d - 3d) * zoom, (y/-200d + 1.5d) * zoom);
+		while (z.abs() <= 2 && n < iter) {
 			z = z.sqr().add(c);
-			iterasjoner += 1;
+			n += 1;
 		}
-		return Color.rgb(Math.round(iterasjoner*100), 0, 0, 1.0);
+		//return Color.rgb(Math.round(n),0, 0, 1.0);
+		if ( n == iter ) {
+			return Color.rgb(0, 0, 0, 1.0);
+		}
+		return colorCalc(0.4, 0.5, 1, n, iter);
+		//return Color.rgb(Math.floorDiv(127, n), Math.floorDiv(127, n), Math.floorDiv(255, n), 1.0);
+	}
+	
+	private Color colorCalc(double a, double b, double c, int n, int iter) {
+		return Color.rgb((int) (a * (n % 255)),(int) (b * (n % 255)), (int) (c * (n % 255)), 1.0);
 	}
 	
 	
